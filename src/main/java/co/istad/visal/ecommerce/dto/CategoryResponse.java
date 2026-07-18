@@ -1,12 +1,15 @@
 package co.istad.visal.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
 @Builder
 public record CategoryResponse(
         Integer id,
-        String name,
+        String cateName,
         String icon,
-        String description
+        String description,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        CategoryResponse parentCategory
 ) {
 }

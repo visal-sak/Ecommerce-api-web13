@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.LifecycleState;
 
 import java.util.List;
 
@@ -16,10 +15,10 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //IDENTITY = auto Increment
+    // IDENTITY = Auto Increment
     private Integer id;
 
-    @Column(unique = true, nullable = false,length = 50)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
     private String icon;
@@ -32,7 +31,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "parent_category_id")
-    private Category category;
+    private Category parentCategory;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;

@@ -1,11 +1,11 @@
 package co.istad.visal.ecommerce.controller;
 
 import co.istad.visal.ecommerce.dto.CategoryResponse;
+import co.istad.visal.ecommerce.dto.CreateCategoryRequest;
 import co.istad.visal.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,8 +16,15 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public CategoryResponse createNew(@RequestBody CreateCategoryRequest createCategoryRequest) {
+        return categoryService.createNew(createCategoryRequest);
+    }
+
     @GetMapping
-    public List<CategoryResponse> findAll(){
+    public List<CategoryResponse> findAll() {
         return categoryService.findAll();
     }
+
 }

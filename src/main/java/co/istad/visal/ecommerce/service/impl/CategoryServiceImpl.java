@@ -1,33 +1,61 @@
 package co.istad.visal.ecommerce.service.impl;
 
 import co.istad.visal.ecommerce.dto.CategoryResponse;
+import co.istad.visal.ecommerce.dto.CreateCategoryRequest;
 import co.istad.visal.ecommerce.entity.Category;
+import co.istad.visal.ecommerce.mapper.CategoryMapper;
 import co.istad.visal.ecommerce.repository.CategoryRepository;
 import co.istad.visal.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
+
+    @Override
+    public CategoryResponse createNew(CreateCategoryRequest createCategoryRequest) {
+        // TODO:
+        // 1. Validate all information form DTO
+        // Validate category name (unique)
+//        Optional<Category> category = categoryRepository.findByName(createCategoryRequest.name());
+        Optional<Category> category = categoryRepository.findByName(createCategoryRequest.name());
+
+        if (category.isPresent()) {
+            System.out.println("Category already exists");
+        }
+
+        Category newCategory = categoryMapper.mapCategoryRequesttoCategory(createCategoryRequest);
+        newCategory.setIsDeleted(false);
+
+        // Validate parent category id
+        if (createCategoryRequest.parentCategoryId() != null) {
+            Category parentCategory = categoryRepository
+                    .findById(createCategoryRequest.parentCategoryId())
+                    .orElseThrow();
+            newCategory.setParentCategory(parentCategory);
+        }
+
+        newCategory = categoryRepository.save(newCategory);
+
+        return categoryMapper.mapCategoryToCategoryResponse(newCategory);
+
+    }
+
 
     @Override
     public List<CategoryResponse> findAll() {
         // ទាញយកទិន្នន័យចេញពី database
         List<Category> categories = categoryRepository.findAll();
-
         // បំលែង entity ទៅជា DTO
-        return categories.stream().map(
-                category -> CategoryResponse.builder()
-                        .id(category.getId())
-                        .name(category.getName())
-                        .icon(category.getIcon())
-                        .description(category.getDescription())
-                        .build()
-        ).toList();
+        return categories.stream()
+                .map(categoryMapper::mapCategoryToCategoryResponse)
+                .toList();
     }
 }
