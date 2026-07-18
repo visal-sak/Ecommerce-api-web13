@@ -4,6 +4,10 @@ import co.istad.visal.ecommerce.dto.CategoryResponse;
 import co.istad.visal.ecommerce.dto.CreateCategoryRequest;
 import co.istad.visal.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +27,13 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryResponse> findAll() {
-        return categoryService.findAll();
+    public Page<CategoryResponse> findAll(
+            @RequestParam (required = false, defaultValue = "0") int pageNumber,
+            @RequestParam (required = false, defaultValue = "25") int pageSize
+    ) {
+        Sort sortById = Sort.by(Sort.Direction.DESC,"id");
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, sortById);
+        return categoryService.findAll(pageable);
     }
 
 }

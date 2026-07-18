@@ -2,6 +2,8 @@ package co.istad.visal.ecommerce.service;
 
 import co.istad.visal.ecommerce.dto.CategoryResponse;
 import co.istad.visal.ecommerce.dto.CreateCategoryRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,11 +14,12 @@ public interface CategoryService {
      * @return CategoryResponse
      */
      CategoryResponse createNew(CreateCategoryRequest createCategoryRequest);
+
     /**
-     * ទាញព័ត៌មាន category ទាំងអស់
+     * ទាញព័ត៌មាន category ទាំងអស់ by paginations
      * @return សំណុំនៃ CategoryResponse
      */
 
-    List<CategoryResponse> findAll();
+    Page<CategoryResponse> findAll(Pageable pageable);
 
 }
