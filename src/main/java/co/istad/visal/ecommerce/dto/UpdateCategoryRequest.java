@@ -1,10 +1,9 @@
 package co.istad.visal.ecommerce.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-public record CreateCategoryRequest(
+public record UpdateCategoryRequest(
         @NotBlank(message = "Name is requires")
         @Size(max = 50)
         String name,
@@ -13,9 +12,6 @@ public record CreateCategoryRequest(
         String description,
 
         @Size(max = 255)
-        String icon,
-
-        @Positive
-        Integer parentCategoryId
+        String icon
 ) {
 }

@@ -5,9 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CategoryRepository extends JpaRepository<Category, Integer> {
+public interface CategoryRepository extends JpaRepository<Category,Integer> {
+
     // Auto generated queries
     // SELECT * FROM categories WHERE name = :name;
     // Derived Query Method - DQM
     Optional<Category> findByName(String name);
+
+    // SELECT EXISTS(SELECT * FROM categories WHERE name = :name);
+    boolean existsByName(String name);
+
 }

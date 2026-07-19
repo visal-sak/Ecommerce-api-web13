@@ -2,6 +2,7 @@ package co.istad.visal.ecommerce.service.impl;
 
 import co.istad.visal.ecommerce.dto.CategoryResponse;
 import co.istad.visal.ecommerce.dto.CreateCategoryRequest;
+import co.istad.visal.ecommerce.dto.UpdateCategoryRequest;
 import co.istad.visal.ecommerce.entity.Category;
 import co.istad.visal.ecommerce.mapper.CategoryMapper;
 import co.istad.visal.ecommerce.repository.CategoryRepository;
@@ -10,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +21,30 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
+    @Override
+    public CategoryResponse upadteById(Integer id, UpdateCategoryRequest updateCategoryRequest) {
+        // TODO:
+        // Validate category ID
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Category has not been found"
+                        )
+                );
+
+        // Validate category name (prevent duplicated name)
+        if (categoryRepository.existsByName(updateCategoryRequest.name())) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Category already exists");
+        }
+
+        categoryMapper.toEntity(updateCategoryRequest, category);
+        category = categoryRepository.save(category);
+
+        return categoryMapper.mapCategoryToCategoryResponse(category);
+    }
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
@@ -31,7 +58,10 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> category = categoryRepository.findByName(createCategoryRequest.name());
 
         if (category.isPresent()) {
-            System.out.println("Category already exists");
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Category name is already exits"
+            );
         }
 
         Category newCategory = categoryMapper.mapCategoryRequesttoCategory(createCategoryRequest);
@@ -41,7 +71,10 @@ public class CategoryServiceImpl implements CategoryService {
         if (createCategoryRequest.parentCategoryId() != null) {
             Category parentCategory = categoryRepository
                     .findById(createCategoryRequest.parentCategoryId())
-                    .orElseThrow();
+                    .orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                    "Parent Category Not Found")
+                    );
             newCategory.setParentCategory(parentCategory);
         }
 
