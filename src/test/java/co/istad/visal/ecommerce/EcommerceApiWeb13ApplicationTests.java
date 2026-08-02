@@ -1,7 +1,7 @@
 package co.istad.visal.ecommerce;
 
-import co.istad.visal.ecommerce.entity.Category;
-import co.istad.visal.ecommerce.repository.CategoryRepository;
+import co.istad.visal.ecommerce.features.category.Category;
+import co.istad.visal.ecommerce.features.category.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
