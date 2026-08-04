@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor
@@ -53,6 +55,11 @@ public class CategoryController {
         Sort sortById = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sortById);
         return categoryService.findAll(pageable);
+    }
+
+    @GetMapping("/search")
+    public List<CategoryResponse> search(@RequestParam String keyword) {
+        return categoryService.search(keyword);
     }
 
 }

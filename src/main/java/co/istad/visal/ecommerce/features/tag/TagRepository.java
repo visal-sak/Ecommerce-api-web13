@@ -2,6 +2,7 @@ package co.istad.visal.ecommerce.features.tag;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TagRepository extends
@@ -12,5 +13,8 @@ public interface TagRepository extends
 
     // SELECT EXISTS(SELECT * FROM tags WHERE name = :name);
     boolean existsByName(String name);
+
+    // SELECT * FROM tags WHERE name ILIKE %:keyword%;
+    List<Tag> findByNameContainingIgnoreCase(String name);
 
 }

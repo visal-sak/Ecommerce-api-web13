@@ -15,6 +15,9 @@ public interface ProductService {
     // find all products by pagination
     Page<ProductResponse> findAll(int pageNumber , int pageSize);
 
+    // search products by keyword (name, code or slug) with pagination
+    Page<ProductResponse> search(String keyword, int pageNumber, int pageSize);
+
     /**
      * Create a new product
      */

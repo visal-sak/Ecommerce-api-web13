@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
@@ -84,5 +86,13 @@ public class TagServiceImpl implements TagService {
     public Page<TagResponse> findAll(Pageable pageable) {
         Page<Tag> tags = tagRepository.findAll(pageable);
         return tags.map(tagMapper::mapTagToTagResponse);
+    }
+
+    @Override
+    public List<TagResponse> search(String keyword) {
+        return tagRepository.findByNameContainingIgnoreCase(keyword)
+                .stream()
+                .map(tagMapper::mapTagToTagResponse)
+                .toList();
     }
 }

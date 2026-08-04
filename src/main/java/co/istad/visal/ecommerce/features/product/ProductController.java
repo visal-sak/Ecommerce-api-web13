@@ -39,4 +39,13 @@ public class ProductController {
         return productService.findAll(pageNumber, pageSize);
     }
 
+    @GetMapping("/search")
+    public Page<ProductResponse> search(
+            @RequestParam String keyword,
+            @RequestParam(required = false, defaultValue = "0") int pageNumber,
+            @RequestParam(required = false, defaultValue = "25") int pageSize
+    ) {
+        return productService.search(keyword, pageNumber, pageSize);
+    }
+
 }

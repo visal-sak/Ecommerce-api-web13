@@ -6,6 +6,8 @@ import co.istad.visal.ecommerce.features.tag.dto.UpdateTagRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface TagService {
 
     TagResponse findById(Integer id);
@@ -17,5 +19,7 @@ public interface TagService {
     TagResponse createNew(CreateTagRequest createTagRequest);
 
     Page<TagResponse> findAll(Pageable pageable);
+
+    List<TagResponse> search(String keyword);
 
 }

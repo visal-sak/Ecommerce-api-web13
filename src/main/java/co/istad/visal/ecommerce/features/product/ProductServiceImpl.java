@@ -75,6 +75,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductResponse> search(String keyword, int pageNumber, int pageSize) {
+        Sort sortByIdDesc = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByIdDesc);
+        return productRepository
+                .findByNameContainingIgnoreCaseOrCodeContainingIgnoreCaseOrSlugContainingIgnoreCase(
+                        keyword, keyword, keyword, pageable)
+                .map(productMapper::toproductResponse);
+    }
+
+    @Override
     public void createNew(CreateProductRequest createProductRequest) {
         // TODO
         // Validate category ID

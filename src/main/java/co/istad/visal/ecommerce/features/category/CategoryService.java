@@ -6,6 +6,8 @@ import co.istad.visal.ecommerce.features.category.dto.CreateCategoryRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface CategoryService {
 
     CategoryResponse findById(Integer id);
@@ -36,5 +38,12 @@ public interface CategoryService {
      */
 
     Page<CategoryResponse> findAll(Pageable pageable);
+
+    /**
+     * ស្វែងរក category តាម keyword (name ឬ description)
+     * @param keyword ពាក្យគន្លឹះសម្រាប់ស្វែងរក
+     * @return សំណុំនៃ CategoryResponse ដែលត្រូវនឹង keyword
+     */
+    List<CategoryResponse> search(String keyword);
 
 }
