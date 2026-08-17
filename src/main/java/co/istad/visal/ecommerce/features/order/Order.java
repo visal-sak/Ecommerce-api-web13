@@ -42,6 +42,6 @@ public class Order {
     private Boolean isDeleted;
 
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderLine> orderLines;
 }

@@ -20,6 +20,9 @@ repositories {
 dependencies {
 	// Validate Dependecy
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	// MapStruct dependency
 	compileOnly 'org.mapstruct:mapstruct:1.6.3'
